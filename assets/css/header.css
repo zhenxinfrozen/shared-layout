@@ -1,0 +1,90 @@
+/* Copied from includes/css/header.css - public asset */
+/* Modern, minimal header/navigation styles for rzx-me
+   Purpose: responsive, accessible, and lightweight. This complements
+   includes/views/header.php which will inline this file if present.
+*/
+:root{
+    --site-bg:#fff;
+    --accent:#333;
+    --muted:#666;
+    --header-height:72px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;color:#333}
+.site-header{background:var(--site-bg);border-bottom:0px solid rgba(0,0,0,0.05);position:relative;box-shadow: 0 2px 15px rgba(255, 6, 6, 0.05);}
+.site-header.fixed{position:fixed;left:0;right:0;top:0;z-index:40000;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow: 0 4px 20px rgba(0,0,0,0.2);transition:all .3s ease}
+.site-header__inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 30px;height:var(--header-height);position:relative;z-index:2}
+.site-brand{font-weight:900;color:#7e7e7e;text-decoration:none;font-size:1.4rem;display:inline-flex;align-items:center;letter-spacing:-0.03em;text-transform:none}
+.site-brand img{height:36px;width:auto;border-radius:4px;margin-right:12px}
+.site-tagline{font-size: 0.9rem; font-weight: 300; color: #777; margin-left: 18px; border-left: 1px solid #ddd; padding-left: 18px; display: inline-block; letter-spacing: 0.15em; font-family: "PingFang SC", "Microsoft YaHei", sans-serif;}
+
+@media (max-width: 900px) {
+    .site-tagline { display: none; }
+}
+
+.site-nav{display:flex;align-items:center;height:100%}
+.site-nav__list{list-style:none;margin:0;padding:0;display:flex;height:100%;gap:0}
+.site-nav__item{margin:0;height:100%}
+.site-nav__link{display:flex;align-items:center;padding:0 22px;color:#777;text-decoration:none;font-size:0.75rem;height:100%;text-transform:uppercase;letter-spacing:0.1em;font-weight: 500;transition:all 0.2s ease}
+.site-nav__link:hover{color:#000;background: #ececec;
+
+    box-shadow: inset 12px 0 12px -10px rgba(0,0,0,0.1), inset -12px 0 12px -10px rgba(0,0,0,0.1);}
+.site-nav__link--active{
+    background:#535353 !important;
+    font-weight:600;
+    color:#fff !important;
+    box-shadow: inset 12px 0 12px -10px rgba(0,0,0,0.7), inset -12px 0 12px -10px rgba(0,0,0,0.7);
+    z-index: 5;
+    position: relative;
+}
+
+/* Mobile: use checkbox toggle for no-JS menu */
+.nav-toggle{display:none}
+.nav-toggle-label{display:none;cursor:pointer;padding:8px;border-radius:6px}
+.nav-toggle-label span,.nav-toggle-label span::before,.nav-toggle-label span::after{display:block;height:2px;background:#111;border-radius:2px;transition:transform .2s,opacity .2s}
+.nav-toggle-label span{width:22px;position:relative}
+.nav-toggle-label span::before,.nav-toggle-label span::after{content:"";position:absolute;left:0;right:0}
+.nav-toggle-label span::before{top:-6px}
+.nav-toggle-label span::after{top:6px}
+
+@media (max-width:780px){
+    .header-height-mobile { --header-height: 60px; }
+    .site-header__inner{padding:0 16px; height: 60px;}
+    .nav-toggle-label{display:inline-flex;align-items:center}
+    .site-brand { font-size: 1.1rem; }
+    .site-nav{position:absolute;left:0;right:0;top:60px;background:var(--site-bg);overflow:hidden;max-height:0;transition:max-height .22s ease;border-bottom:1px solid #eee;height: auto !important;box-shadow: 0 10px 15px rgba(0,0,0,0.05);}
+    .site-nav__list{flex-direction:column;padding:10px 0;height: auto;gap:0}
+    .site-nav__item{height: auto; width: 100%;}
+    .site-nav__link{padding:14px 20px;border-radius:0;height: auto;width: 100%;justify-content: flex-start; font-size: 0.9rem;}
+    .nav-toggle:checked + .nav-toggle-label span{transform:rotate(45deg)}
+    .nav-toggle:checked + .nav-toggle-label span::before{transform:translateY(6px) rotate(90deg)}
+    .nav-toggle:checked + .nav-toggle-label span::after{opacity:0}
+    .nav-toggle:checked ~ .site-nav{max-height:80vh; overflow-y: auto;}
+}
+
+/* Focus styles for keyboard users */
+.site-nav__link:focus{outline: none; background: #eee;}
+
+/* Scrolled state: slightly more opaque or different shadow */
+.site-header.scrolled{box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+
+/* Ensure page content doesn't jump when header becomes fixed */
+body.has-fixed-header{padding-top:var(--header-height)}
+@media (max-width:780px){
+    body.has-fixed-header{padding-top:60px}
+}
+
+/* ===== 下拉子菜单 (children) 支持 ===== */
+.site-nav__item--has-children{position:relative}
+.site-nav__sub{display:none;position:absolute;top:100%;left:0;min-width:180px;list-style:none;margin:0;padding:6px 0;background:var(--site-bg);border:1px solid #eee;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:41000}
+.site-nav__item--has-children:hover .site-nav__sub,
+.site-nav__item--has-children:focus-within .site-nav__sub{display:block}
+.site-nav__sublink{display:block;padding:10px 18px;color:#777;text-decoration:none;font-size:0.8rem;letter-spacing:0.05em;white-space:nowrap;transition:all .15s ease}
+.site-nav__sublink:hover{color:#000;background:#ececec}
+.site-nav__sublink--active{color:#000;font-weight:600;background:#f2f2f2}
+
+@media (max-width:780px){
+    /* 移动端: 子菜单直接展开为缩进列表 (无 JS) */
+    .site-nav__sub{display:block;position:static;box-shadow:none;border:none;padding:0 0 0 20px;background:transparent}
+    .site-nav__sublink{padding:10px 20px}
+}
