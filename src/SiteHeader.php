@@ -26,6 +26,7 @@ class SiteHeader
      * @param array $config {
      *   brand        string   站点名称 (如 'RZX.ME'), 选填, 无默认值
      *   tagline      string   副标题/站点 slogan (如 '颓废动画人'), 选填, 默认 ''
+     *   badges       array    品牌区小徽章 (如 git 分支/版本号), 字符串数组, 显示在 tagline 后面, 选填
      *   logo         string   站点图标 URL (显示在 brand 左侧), 选填, 默认 null
      *   logo_file    string   logo 对应的磁盘路径(用于存在性检查), 选填, 默认 null
      *                         (旧名 avatar / avatar_file 仍兼容)
@@ -50,6 +51,7 @@ class SiteHeader
     {
         $brand    = $config['brand'] ?? '';
         $tagline  = $config['tagline'] ?? '';
+        $badges   = $config['badges'] ?? [];
         $homeUrl  = $config['home_url'] ?? '/';
         // logo: 站点图标 (兼容旧名 avatar / avatar_file)
         $logo     = $config['logo'] ?? ($config['avatar'] ?? null);
@@ -81,6 +83,9 @@ class SiteHeader
                 <img class="site-brand__logo" src="<?php echo self::e($logo); ?>" alt="<?php echo self::e($brand !== '' ? $brand : 'brand'); ?> logo">
             <?php endif; ?>
             <?php if ($brand !== ''): ?><span class="site-brand__name"><?php echo self::e($brand); ?></span><?php endif; ?><?php if ($tagline !== ''): ?><span class="site-tagline"><?php echo self::e($tagline); ?></span><?php endif; ?>
+            <?php foreach ($badges as $badge): ?>
+                <span class="site-badge"><?php echo self::e($badge); ?></span>
+            <?php endforeach; ?>
         </a>
         <?php endif; ?>
 

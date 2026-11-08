@@ -23,6 +23,10 @@ body{margin:0;font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI
 /* brand 存在时, tagline 用竖线分隔 */
 .site-brand__name + .site-tagline{margin-left: 18px; border-left: 1px solid #ddd; padding-left: 18px;}
 
+/* 品牌区小徽章 (git 分支/版本号等) */
+.site-badge{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:10px;background:#f0f0f0;color:#666;font-size:0.7rem;font-weight:500;letter-spacing:0.05em;vertical-align:middle}
+.site-badge + .site-badge{margin-left:4px}
+
 @media (max-width: 900px) {
     .site-tagline { display: none; }
 }
