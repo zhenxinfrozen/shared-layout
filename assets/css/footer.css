@@ -60,7 +60,7 @@ body{
 
 /* 底部: 版权 + powered by */
 .site-footer__bottom{
-    max-width:1400px;margin:40px auto 0;
+    max-width:1400px;margin:0 auto;
     padding-top:20px;
     display:flex;align-items:center;justify-content:center;gap:60px;flex-wrap:wrap;
     font-size:0.85rem;color:var(--footer-muted);letter-spacing:0.05em;
