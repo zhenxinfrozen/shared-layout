@@ -5,12 +5,21 @@
     --footer-bg:#fff;
     --footer-text:#333;
     --footer-muted:#999;
-    --footer-border:#eee;
 }
+
+/* ===== Sticky Footer: 内容不足一页时, footer 自动沉到视口底部 ===== */
+/* body 变成 flex column, min-height 100vh; footer 用 margin-top:auto 推到底 */
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
 .site-footer{
     background:var(--footer-bg);
-    border-top:1px solid var(--footer-border);
-    margin-top:80px;
+    /* 不用实体 border-top, 改用向上的柔和阴影, 模拟浮层视觉 (与 header 底部阴影同一思路) */
+    box-shadow:0 -2px 15px rgba(0,0,0,0.05);
+    margin-top:auto;           /* sticky footer 关键: 自动沉底 */
     padding:40px 20px 24px;
     color:var(--footer-text);
     font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
@@ -61,7 +70,7 @@
 
 /* 响应式 */
 @media (max-width:780px){
-    .site-footer{padding:30px 16px 20px;margin-top:60px}
+    .site-footer{padding:30px 16px 20px}
     .site-footer__inner{flex-direction:column;gap:24px}
     .site-footer__brand{gap:16px}
     .site-footer__logo{width:56px;height:56px}
