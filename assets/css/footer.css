@@ -1,0 +1,72 @@
+/* SharedLayout\SiteFooter - 通用底部样式
+   接入项目可在自己的 CSS 里覆盖 :root 变量换肤, 不要改本文件。
+*/
+:root{
+    --footer-bg:#fff;
+    --footer-text:#333;
+    --footer-muted:#999;
+    --footer-border:#eee;
+}
+.site-footer{
+    background:var(--footer-bg);
+    border-top:1px solid var(--footer-border);
+    margin-top:80px;
+    padding:40px 20px 24px;
+    color:var(--footer-text);
+    font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
+}
+.site-footer__inner{
+    max-width:1400px;margin:0 auto;
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:40px;flex-wrap:wrap;
+}
+
+/* 左侧: logo + brand + description */
+.site-footer__brand{display:flex;align-items:flex-start;gap:20px;max-width:600px}
+.site-footer__logo{
+    width:80px;height:80px;border-radius:8px;object-fit:cover;flex-shrink:0;
+}
+.site-footer__text{display:flex;flex-direction:column;gap:8px}
+.site-footer__name{
+    font-size:1.6rem;font-weight:800;color:var(--footer-text);
+    text-decoration:none;letter-spacing:-0.02em;line-height:1.2;
+}
+.site-footer__name:hover{color:var(--footer-muted)}
+.site-footer__desc{
+    font-size:1.05rem;font-weight:300;color:#555;
+    line-height:1.6;margin:0;letter-spacing:0;
+}
+
+/* 右侧: 底部导航 */
+.site-footer__nav{
+    display:flex;align-items:center;gap:36px;flex-wrap:wrap;
+    padding-top:8px;
+}
+.site-footer__navlink{
+    font-size:0.95rem;font-weight:500;color:#b0b0b0;
+    text-decoration:none;letter-spacing:0.05em;
+    transition:color .15s ease;
+}
+.site-footer__navlink:hover{color:var(--footer-text)}
+
+/* 底部: 版权 + powered by */
+.site-footer__bottom{
+    max-width:1400px;margin:40px auto 0;
+    padding-top:20px;
+    display:flex;align-items:center;justify-content:center;gap:60px;flex-wrap:wrap;
+    font-size:0.85rem;color:var(--footer-muted);letter-spacing:0.05em;
+}
+.site-footer__copy{font-weight:400}
+.site-footer__powered{font-weight:300}
+
+/* 响应式 */
+@media (max-width:780px){
+    .site-footer{padding:30px 16px 20px;margin-top:60px}
+    .site-footer__inner{flex-direction:column;gap:24px}
+    .site-footer__brand{gap:16px}
+    .site-footer__logo{width:56px;height:56px}
+    .site-footer__name{font-size:1.3rem}
+    .site-footer__desc{font-size:0.95rem}
+    .site-footer__nav{gap:20px;padding-top:0;justify-content:flex-start}
+    .site-footer__bottom{margin-top:30px;gap:16px;flex-direction:column;text-align:center}
+}

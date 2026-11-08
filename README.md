@@ -1,9 +1,9 @@
 # shared-layout
 
-可挂载的站点公共布局组件（当前：顶部菜单栏 logo + 站点名 + 菜单；后续：footer），
+可挂载的站点公共布局组件（当前：顶部菜单栏 logo + 站点名 + 菜单；底部 footer logo + brand + nav + 版权），
 与 `shared-admin` 同一思路：样式与结构由本组件统一维护，各项目自行 require 并传入配置即可接入。
 
-**组件本身不假设任何品牌**：`brand` / `tagline` / `avatar` / `nav` 全部由接入方传入，默认值只有
+**组件本身不假设任何品牌**：`brand` / `tagline` / `logo` / `nav` 全部由接入方传入，默认值只有
 `home_url='/'`、`fixed=true`、`nav=[]` 这类与品牌无关的通用约定。
 
 ## 结构
@@ -11,7 +11,9 @@
 ```
 shared-layout/
 ├── src/SiteHeader.php        # 顶部菜单栏 \SharedLayout\SiteHeader
-└── assets/css/header.css     # 样式 (通过 public/shared-layout junction 暴露)
+├── src/SiteFooter.php       # 底部组件 \SharedLayout\SiteFooter
+├── assets/css/header.css     # 顶部样式
+└── assets/css/footer.css     # 底部样式
 ```
 
 ## 接入方式（中性示例）
@@ -48,6 +50,31 @@ echo \SharedLayout\SiteHeader::render([
 `assets_path` / `fixed`。详见 `SiteHeader::render()` 注释。
 
 > 旧名 `avatar` / `avatar_file` 仍兼容, 但新接入建议用 `logo` / `logo_file`。
+
+## SiteFooter 接入（中性示例）
+
+```php
+require_once <root>/shared-layout/src/SiteFooter.php;
+
+echo \SharedLayout\SiteFooter::render([
+    'logo'       => '/assets/avatar.jpg',
+    'brand'      => 'MY-SITE',
+    'description' => [
+        'This site is a portfolio of Ray.',
+        'Hope you enjoy it!',
+    ],
+    'nav' => [
+        '首页 HOME'    => '/',
+        '博客 BLOG'    => '/blog',
+        '作者 ABOUT'   => '/about',
+    ],
+    'copyright'  => '© 2009-2026 RAY RUI. ALL RIGHTS RESERVED.',
+    'powered_by' => 'Powered by something',
+]);
+```
+
+`description` 支持数组（每行一个 `<br>`）或单字符串。`nav` / `copyright` / `powered_by` 均选填，
+不传则对应块不渲染。
 
 ## 换肤（覆盖 CSS 变量）
 
@@ -87,4 +114,5 @@ echo \SharedLayout\SiteHeader::render([
 
 ## 路线图
 
-- [ ] footer 组件化（`\SharedLayout\SiteFooter`，迁移自主站 `app/Views/layouts/footer.php`）
+- [x] ~~footer 组件化（`\SharedLayout\SiteFooter`）~~ 已落地
+- [ ] 更多布局组件（如侧边栏、面包屑）视需要补充
