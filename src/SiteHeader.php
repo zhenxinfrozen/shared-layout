@@ -24,11 +24,12 @@ class SiteHeader
      * 渲染顶部菜单栏 HTML
      *
      * @param array $config {
-     *   brand        string   站点名称, 默认 'RZX.ME'
-     *   tagline      string   品牌右侧标语, 默认 ''
+     *   brand        string   站点名称 (如 'RZX.ME'), 选填, 无默认值
+     *   tagline      string   副标题/站点 slogan (如 '颓废动画人'), 选填, 默认 ''
+     *   logo         string   站点图标 URL (显示在 brand 左侧), 选填, 默认 null
+     *   logo_file    string   logo 对应的磁盘路径(用于存在性检查), 选填, 默认 null
+     *                         (旧名 avatar / avatar_file 仍兼容)
      *   home_url     string   品牌链接, 默认 '/'
-     *   avatar       string   头像 URL, 默认 null (不显示)
-     *   avatar_file  string   头像对应的磁盘路径(用于存在性检查), 默认 null (不检查)
      *   nav          array    菜单: 'Label' => '/href'
      *                         或 'Label' => ['href' => '/href', 'children' => ['子项' => '/href', ...]]
      *   active_map   array    'Label' => [额外视为激活的路径前缀...]
@@ -38,21 +39,29 @@ class SiteHeader
      *   assets_path  string   静态资源磁盘路径, 默认组件自带 assets 目录
      *   fixed        bool     是否置顶(pin)并启用滚动样式, 默认 true
      * }
+     *
+     * brand 区域渲染规则 (三者自由组合, 都为空则不输出 brand 块):
+     *   logo 存在   → 显示图标
+     *   brand 存在 → 显示站点名 (包在 .site-brand__name)
+     *   tagline 存在且 brand 存在 → 竖线分隔 + tagline (用 .site-brand__name + .site-tagline 兄弟选择器)
+     *   tagline 存在但 brand 不存在 → 直接跟在 logo 后, 无竖线
      */
     public static function render(array $config = []): string
     {
-        $brand    = $config['brand'] ?? 'RZX.ME';
+        $brand    = $config['brand'] ?? '';
         $tagline  = $config['tagline'] ?? '';
         $homeUrl  = $config['home_url'] ?? '/';
-        $avatar   = $config['avatar'] ?? null;
+        // logo: 站点图标 (兼容旧名 avatar / avatar_file)
+        $logo     = $config['logo'] ?? ($config['avatar'] ?? null);
+        $logoFile = $config['logo_file'] ?? ($config['avatar_file'] ?? null);
         $nav      = $config['nav'] ?? [];
         $fixed    = $config['fixed'] ?? true;
         $urlRewriter = $config['url_rewriter'] ?? null;
         $activeMap   = $config['active_map'] ?? [];
         $currentPath = $config['current_path'] ?? self::detectCurrentPath();
 
-        if ($avatar && !empty($config['avatar_file']) && !is_file($config['avatar_file'])) {
-            $avatar = null;
+        if ($logo && !empty($logoFile) && !is_file($logoFile)) {
+            $logo = null;
         }
 
         $assetsUrl  = rtrim($config['assets_url'] ?? '/shared-layout/assets', '/');
@@ -66,12 +75,14 @@ class SiteHeader
         ?>
 <header class="site-header" role="banner">
     <div class="site-header__inner">
+        <?php if ($logo || $brand !== '' || $tagline !== ''): ?>
         <a class="site-brand" href="<?php echo self::e($buildUrl($homeUrl)); ?>">
-            <?php if ($avatar): ?>
-                <img src="<?php echo self::e($avatar); ?>" alt="<?php echo self::e($brand); ?> avatar">
+            <?php if ($logo): ?>
+                <img class="site-brand__logo" src="<?php echo self::e($logo); ?>" alt="<?php echo self::e($brand !== '' ? $brand : 'brand'); ?> logo">
             <?php endif; ?>
-            <?php echo self::e($brand); ?><?php if ($tagline !== ''): ?> <span class="site-tagline"><?php echo self::e($tagline); ?></span><?php endif; ?>
+            <?php if ($brand !== ''): ?><span class="site-brand__name"><?php echo self::e($brand); ?></span><?php endif; ?><?php if ($tagline !== ''): ?><span class="site-tagline"><?php echo self::e($tagline); ?></span><?php endif; ?>
         </a>
+        <?php endif; ?>
 
         <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-hidden="true">
         <label for="nav-toggle" class="nav-toggle-label" aria-hidden="true">
