@@ -45,11 +45,26 @@ echo \SharedLayout\SiteHeader::render([
 ]);
 ```
 
-常用配置项：`brand` / `tagline` / `logo` / `logo_file` / `home_url` /
+常用配置项：`brand` / `tagline` / `badges` / `logo` / `logo_file` / `home_url` /
 `nav` / `active_map` / `current_path` / `url_rewriter` / `assets_url` /
 `assets_path` / `fixed`。详见 `SiteHeader::render()` 注释。
 
 > 旧名 `avatar` / `avatar_file` 仍兼容, 但新接入建议用 `logo` / `logo_file`。
+
+### Badges 徽章（git 分支 / 版本号等）
+
+`badges` 是字符串数组，会在 brand 名称旁边渲染成灰色小胶囊。适合显示 git 分支、版本号等开发状态：
+
+```php
+echo \SharedLayout\SiteHeader::render([
+    'brand'  => 'GeminiArchives',
+    'badges' => ['v1.0.0', 'dev'],  // 两个灰色小徽章
+    'nav'    => [...],
+]);
+```
+
+接入项目自己负责获取 git 分支（如调用 `git rev-parse --abbrev-ref HEAD`），然后传给组件。
+组件本身不内置 git 逻辑，保持通用性。
 
 ## SiteFooter 接入（中性示例）
 
@@ -109,6 +124,8 @@ echo \SharedLayout\SiteFooter::render([
   传 `url_rewriter => 'url'` 以支持非伪静态模式）
 - **RayLab**: `lab/lab-plugin/raylab-header.php`（同主站菜单 + `LAB 项目` 下拉子菜单，
   兼容 junction 双路径）
+- **ray-gemini-ai**: `src/layout/raylab-header.php`（`brand='GeminiArchives'`、
+  `badges` 传入 git 分支 + 自定义版本号）
 - **test-arterwer-static**（静态 HTML 测试页）: 通过 junction 挂载 `shared-layout/`，
   手写一份 SiteHeader 输出的镜像 HTML，用于验证组件在非 PHP 项目里的视觉效果
 
