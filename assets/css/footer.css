@@ -16,12 +16,14 @@ body{
 }
 
 .site-footer{
-    background:var(--footer-bg);
-    /* 不用实体 border-top, 改用向上的柔和阴影, 模拟浮层视觉 (与 header 底部阴影同一思路) */
+    background:var(--footer-bg, #fff);
+    /* 不用实体 border-top, 改用向上的柔和渐变阴影, 模拟浮层视觉 (与 header 底部阴影同一思路) */
     box-shadow:0 -2px 15px rgba(0,0,0,0.05);
+    /* 顶部渐变: 从透明到白色, 模拟 footer 浮在内容上层的视觉 */
+    background-image:linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.9) 20%, var(--footer-bg, #fff) 40%);
     margin-top:auto;           /* sticky footer 关键: 自动沉底 */
     padding:40px 20px 24px;
-    color:var(--footer-text);
+    color:var(--footer-text, #333);
     font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
 }
 .site-footer__inner{
