@@ -26,7 +26,7 @@ class SiteFooter
      *
      * @param array $config {
      *   brand        string   站点名称 (粗体大字), 选填, 默认 ''
-     *   logo         string   站点图标 URL, 选填, 默认 null
+     *   logo         string   站点图标 URL, 选填; 未传或文件缺失时回退套件内置 default-logo.svg
      *   logo_file    string   logo 磁盘路径(存在性检查), 选填
      *   description  array|string   站点描述 (小字, 数组按行渲染), 选填, 默认 []
      *   nav          array    底部导航: 'Label' => '/href', 选填, 默认 []
@@ -53,12 +53,14 @@ class SiteFooter
         $homeUrl     = $config['home_url'] ?? '/';
         $urlRewriter = $config['url_rewriter'] ?? null;
 
-        if ($logo && !empty($logoFile) && !is_file($logoFile)) {
-            $logo = null;
-        }
-
         $assetsUrl  = rtrim($config['assets_url'] ?? '/shared-layout/assets', '/');
         $assetsPath = rtrim($config['assets_path'] ?? (__DIR__ . '/../assets'), '/\\');
+
+        // 内置默认 logo 退守: 未传入, 或传入的磁盘文件不存在时, 回退套件自带 default-logo.svg
+        if (!$logo || (!empty($logoFile) && !is_file($logoFile))) {
+            $defaultLogoFile = $assetsPath . '/images/default-logo.svg';
+            $logo = is_file($defaultLogoFile) ? $assetsUrl . '/images/default-logo.svg' : null;
+        }
 
         $buildUrl = function ($href) use ($urlRewriter) {
             return $urlRewriter ? call_user_func($urlRewriter, $href) : $href;

@@ -3,8 +3,9 @@
 可挂载的站点公共布局组件（当前：顶部菜单栏 logo + 站点名 + 菜单；底部 footer logo + brand + nav + 版权），
 与 `shared-admin` 同一思路：样式与结构由本组件统一维护，各项目自行 require 并传入配置即可接入。
 
-**组件本身不假设任何品牌**：`brand` / `tagline` / `logo` / `nav` 全部由接入方传入，默认值只有
-`home_url='/'`、`fixed=true`、`nav=[]` 这类与品牌无关的通用约定。
+**组件本身不假设任何品牌**：`brand` / `tagline` / `nav` 全部由接入方传入，默认值只有
+`home_url='/'`、`fixed=true`、`nav=[]` 这类与品牌无关的通用约定。`logo` 未传或传入的磁盘文件
+缺失时，回退套件内置的中性占位图 `assets/images/default-logo.svg`（不含任何品牌标识）。
 
 ## 结构
 
@@ -13,7 +14,8 @@ shared-layout/
 ├── src/SiteHeader.php        # 顶部菜单栏 \SharedLayout\SiteHeader
 ├── src/SiteFooter.php       # 底部组件 \SharedLayout\SiteFooter
 ├── assets/css/header.css     # 顶部样式
-└── assets/css/footer.css     # 底部样式
+├── assets/css/footer.css     # 底部样式
+└── assets/images/default-logo.svg  # 内置缺省 logo 退守图
 ```
 
 ## 接入方式（中性示例）
@@ -50,6 +52,9 @@ echo \SharedLayout\SiteHeader::render([
 `assets_path` / `fixed`。详见 `SiteHeader::render()` 注释。
 
 > 旧名 `avatar` / `avatar_file` 仍兼容, 但新接入建议用 `logo` / `logo_file`。
+>
+> `logo` 选填：不传、或 `logo_file` 指向的磁盘文件不存在时，组件自动回退内置
+> `default-logo.svg`；接入方传了有效项目图则优先用项目图。
 
 ### Badges 徽章（git 分支 / 版本号等）
 

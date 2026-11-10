@@ -27,7 +27,7 @@ class SiteHeader
      *   brand        string   站点名称 (如 'RZX.ME'), 选填, 无默认值
      *   tagline      string   副标题/站点 slogan (如 '颓废动画人'), 选填, 默认 ''
      *   badges       array    品牌区小徽章 (如 git 分支/版本号), 字符串数组, 显示在 tagline 后面, 选填
-     *   logo         string   站点图标 URL (显示在 brand 左侧), 选填, 默认 null
+     *   logo         string   站点图标 URL (显示在 brand 左侧), 选填; 未传或文件缺失时回退套件内置 default-logo.svg
      *   logo_file    string   logo 对应的磁盘路径(用于存在性检查), 选填, 默认 null
      *                         (旧名 avatar / avatar_file 仍兼容)
      *   home_url     string   品牌链接, 默认 '/'
@@ -62,12 +62,14 @@ class SiteHeader
         $activeMap   = $config['active_map'] ?? [];
         $currentPath = $config['current_path'] ?? self::detectCurrentPath();
 
-        if ($logo && !empty($logoFile) && !is_file($logoFile)) {
-            $logo = null;
-        }
-
         $assetsUrl  = rtrim($config['assets_url'] ?? '/shared-layout/assets', '/');
         $assetsPath = rtrim($config['assets_path'] ?? (__DIR__ . '/../assets'), '/\\');
+
+        // 内置默认 logo 退守: 未传入, 或传入的磁盘文件不存在时, 回退套件自带 default-logo.svg
+        if (!$logo || (!empty($logoFile) && !is_file($logoFile))) {
+            $defaultLogoFile = $assetsPath . '/images/default-logo.svg';
+            $logo = is_file($defaultLogoFile) ? $assetsUrl . '/images/default-logo.svg' : null;
+        }
 
         $buildUrl = function ($href) use ($urlRewriter) {
             return $urlRewriter ? call_user_func($urlRewriter, $href) : $href;
